@@ -36,7 +36,6 @@ public class TestController extends Resources{
 	public void TestCaseController() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
 		System.out.println("In test---------------------------");		
 		
-		int numCol=SuiteData.getColumnCount("TestCases");
 		String startTime = TestUtils.now("dd.MMMM.yyyy hh.mm.ss aaa");
 		ReportUtil.startTesting(System.getProperty("user.dir")+"//src//test//java//com//companyname//projectname//Reports//index.html", startTime, "Test", "1.5");
 		ReportUtil.startSuite("Suite1");
@@ -61,14 +60,21 @@ public class TestController extends Resources{
 				
 					// loop through the test steps
 					System.out.println("SuiteData.getRowCount(TestCaseID)"+SuiteData.getRowCount(TestCaseID));
+					
 					for(int TS=2;TS<=SuiteData.getRowCount(TestCaseID);TS++) {
+						
 						keyword = SuiteData.getCellData(TestCaseID, "Keyword", TS);
 						webElement = SuiteData.getCellData(TestCaseID, "WebElement", TS);
 						ProceedOnFail = SuiteData.getCellData(TestCaseID, "ProceedOnFail", TS);
 						TSID = SuiteData.getCellData(TestCaseID, "TSID", TS);
 						Description = SuiteData.getCellData(TestCaseID, "Description", TS);
+						
 						TestDataField = SuiteData.getCellData(TestCaseID, "TestDataField", TS);
-						TestData = TestStepData.getCellData(TestCaseID, TestDataField, TD);			
+						
+						
+						TestData = TestStepData.getCellData(TestCaseID, TestDataField, TD);	
+						
+						
 						Method method = Keywords.class.getMethod(keyword);	
 						TSStatus = (String) method.invoke(method);
 						

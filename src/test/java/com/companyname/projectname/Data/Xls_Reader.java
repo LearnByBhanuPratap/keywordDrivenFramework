@@ -22,11 +22,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 public class Xls_Reader {
-	//public static String filename = System.getProperty("user.dir")+"\\src\\config\\testcases\\TestData.xlsx";
 	public  String path;
 	public  FileInputStream fis = null;
 	public  FileOutputStream fileOut =null;
-	private XSSFWorkbook workbook = null;
+    private XSSFWorkbook workbook = null;
 	private XSSFSheet sheet = null;
 	private XSSFRow row   =null;
 	private XSSFCell cell = null;
@@ -37,7 +36,8 @@ public class Xls_Reader {
 		try {
 			fis = new FileInputStream(path);
 			workbook = new XSSFWorkbook(fis);
-			sheet = workbook.getSheetAt(0);
+
+			//sheet = workbook.getSheetAt(0);
 			fis.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -48,8 +48,9 @@ public class Xls_Reader {
 	// returns the row count in a sheet
 	public int getRowCount(String sheetName){
 		int index = workbook.getSheetIndex(sheetName);
-		if(index==-1)
+		if(index==-1){
 			return 0;
+		}
 		else{
 		sheet = workbook.getSheetAt(index);
 		int number=sheet.getLastRowNum()+1;
@@ -61,48 +62,65 @@ public class Xls_Reader {
 	// returns the data from a cell
 	public String getCellData(String sheetName,String colName,int rowNum){
 		try{
-			if(rowNum <=0)
+			if(rowNum <=0){
 				return "";
+			}
 		
 		int index = workbook.getSheetIndex(sheetName);
+		
 		int col_Num=-1;
-		if(index==-1)
-			return "";
 		
-		sheet = workbook.getSheetAt(index);
-		row=sheet.getRow(0);
-		for(int i=0;i<row.getLastCellNum();i++){
-			if(row.getCell(i).getStringCellValue().trim().equals(colName.trim()))
-				col_Num=i;
+		if(index==-1){
+			System.out.println("given sheet is not present:-"+sheetName);
+			return "";
 		}
-		if(col_Num==-1)
-			return "";
 		
 		sheet = workbook.getSheetAt(index);
-		row = sheet.getRow(rowNum-1);
-		if(row==null)
+		
+		row=sheet.getRow(0);
+		
+		for(int i=0;i<row.getLastCellNum();i++){
+			if(row.getCell(i).getStringCellValue().trim().equals(colName.trim())){
+				col_Num=i;
+			}
+		}
+		
+		if(col_Num==-1){
 			return "";
+		}
+		
+		sheet = workbook.getSheetAt(index);
+		
+		row = sheet.getRow(rowNum-1);
+		
+		if(row==null){
+			return "";
+		}
+		
 		cell = row.getCell(col_Num);
 		
-		if(cell==null)
+		if(cell==null){
+			System.out.println("cell is not present");
 			return "";
+		}
 		//System.out.println(cell.getCellType());
-		if(cell.getCellType()==Cell.CELL_TYPE_STRING)
+		if(cell.getCellType()==Cell.CELL_TYPE_STRING){
 			  return cell.getStringCellValue();
+		}
 		else if(cell.getCellType()==Cell.CELL_TYPE_NUMERIC || cell.getCellType()==Cell.CELL_TYPE_FORMULA ){
 			  
 			  String cellText  = String.valueOf(cell.getNumericCellValue());
+			  
 			  if (HSSFDateUtil.isCellDateFormatted(cell)) {
 		           // format in form of M/D/YY
 				  double d = cell.getNumericCellValue();
 
 				  Calendar cal =Calendar.getInstance();
+				  
 				  cal.setTime(HSSFDateUtil.getJavaDate(d));
-		            cellText =
-		             (String.valueOf(cal.get(Calendar.YEAR))).substring(2);
-		           cellText = cal.get(Calendar.DAY_OF_MONTH) + "/" +
-		                      cal.get(Calendar.MONTH)+1 + "/" + 
-		                      cellText;
+		            cellText = (String.valueOf(cal.get(Calendar.YEAR))).substring(2);
+		            
+		           cellText = cal.get(Calendar.DAY_OF_MONTH) + "/" +cal.get(Calendar.MONTH)+1 + "/" + cellText;
 		           
 		           //System.out.println(cellText);
 

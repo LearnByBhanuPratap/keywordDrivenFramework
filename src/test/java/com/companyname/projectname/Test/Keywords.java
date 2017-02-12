@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.companyname.projectname.Utils.Resources;
+import com.companyname.projectname.uiActions.RegistrationPage;
 import com.google.common.base.Function;
 
 public class Keywords extends Resources{
@@ -28,12 +29,14 @@ public class Keywords extends Resources{
 	public static String selectRadioButton() {
 		System.out.println("InputText is called");
 		try {
-			getWebElement(webElement).click();;
+			getWebElement(webElement).click();
 		}catch (Throwable t) {
 			return "Failed - Element not found "+webElement;
 		}
 		return "Pass";
 	}
+	
+
 	
 	public static String InputText() {
 		System.out.println("InputText is called");
@@ -84,69 +87,6 @@ public class Keywords extends Resources{
 		return "Pass";
 	}
 	
-	public static String selectDaysInDropDown() throws Exception{
-		try {
-			System.out.println("clicking on day drop down");
-			getWebElement(Repository.getProperty("registration.days")).click();
-			Thread.sleep(1000);
-			String day1 = "//*[@id='days']/option[";
-			String day2 = "]";
-			System.out.println("selecting day in day day drop down");
-			driver.findElement(By.xpath(day1 + TestData + day2)).click();
-		} catch (Exception e) {
-			return "Failed - unable to select day in dropdown";
-		}
-		return "Pass";
-	}
-	
-	public static String selectMonthInDropDown() throws Exception{
-		try {
-			System.out.println("clicking on month drop down");
-			getWebElement(Repository.getProperty("registration.months")).click();
-			Thread.sleep(1000);
-			List<WebElement> monthsData = driver.findElements(By.xpath("//*[@id='months']/option"));
-			for (WebElement mon : monthsData) {
-				if (mon.getText().trim().toLowerCase().equals(TestData.toLowerCase())) {
-					System.out.println("selecting month in month drop down");
-					mon.click();
-				}
-			}
-		} catch (Exception e) {
-			return "Failed - unable to select month in dropdown";
-		}
-		return "Pass";
-	}
-	
-	public static String selectYearInDropDown() throws Exception{
-		try {
-			System.out.println("clicking on year drop down");
-			getWebElement(Repository.getProperty("registration.year")).click();
-			Thread.sleep(1000);
-			List<WebElement> years = driver.findElements(By.xpath("//*[@id='years']/option"));
-			for (WebElement year : years) {
-				if (year.getText().trim().equals(TestData)) {
-					System.out.println("clickin on year option");
-					year.click();
-				}
-			}
-		} catch (Exception e) {
-			return "Failed - unable to select year in dropdown";
-		}
-		return "Pass";
-	}
-	
-	public static String selectYourAddressCountry() throws Exception{
-		try {
-			System.out.println("clicking on your Address Country Name");
-			getWebElement("registration.yourAddressCountryName").click();
-			Thread.sleep(1000);
-			System.out.println("selecting Country Name");
-			driver.findElement(By.xpath("//*[@id='id_country']/option[2]")).click();
-		} catch (Exception e) {
-			return "Failed - unable to select country in dropdown";
-		}
-		return "Pass";
-	}
 	
    /**
     * This Method will return web element.
@@ -287,6 +227,26 @@ public class Keywords extends Resources{
 			return "Failed - unable to load the page";
 		}
 		return "Pass";
+	}
+	
+	public static String selectDaysInDropDown() throws Exception{
+		RegistrationPage reg = new RegistrationPage();
+		return reg.selectDaysInDropDown();
+	}
+	
+	public static String selectMonthInDropDown() throws Exception{
+		RegistrationPage reg = new RegistrationPage();
+		return reg.selectMonthInDropDown();
+	}
+	
+	public static String selectYearInDropDown() throws Exception{
+		RegistrationPage reg = new RegistrationPage();
+		return reg.selectYearInDropDown();
+	}
+	
+	public static String selectYourAddressCountry() throws Exception{
+		RegistrationPage reg = new RegistrationPage();
+		return reg.selectYourAddressCountry();
 	}
 	
 	public static void closeBrowser(){

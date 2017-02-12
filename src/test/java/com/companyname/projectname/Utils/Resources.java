@@ -10,7 +10,11 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import com.companyname.projectname.Data.Xls_Reader;
 
+import net.sourceforge.htmlunit.corejs.javascript.tools.debugger.Main;
+
 public class Resources {
+	
+	
 	public static WebDriver dr;
 	public static EventFiringWebDriver driver;
 	public static Properties Repository = new Properties();
@@ -33,6 +37,7 @@ public class Resources {
 		
 		TestStepData = new Xls_Reader(System.getProperty("user.dir")+"//src//test//java//com//companyname//projectname//Data//TestSuite1Data.xlsx");
 		SuiteData = new Xls_Reader(System.getProperty("user.dir")+"//src//test//java//com//companyname//projectname//Data//TestSuite1.xlsx");
+		System.out.println(System.getProperty("user.dir"));
 		
 		f = new File(System.getProperty("user.dir")+"//src//test//java//com//companyname//projectname//repository//login.properties");
 		FI = new FileInputStream(f);
@@ -42,8 +47,13 @@ public class Resources {
 		FI = new FileInputStream(f);
 		Repository.load(FI);
 		
+	}
 	
-		
+	public static void main(String[] args) throws IOException {
+		Initialize();
+		System.out.println("--------");
+		System.out.println(Repository.getProperty("login.signOut"));
+	
 	}
 	
 }
