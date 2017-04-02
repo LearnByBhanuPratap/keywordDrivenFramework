@@ -65,6 +65,7 @@ public class Keywords extends Resources{
 		System.out.println("VerifyText is called");
 		try {
 			String ActualText= getWebElement(webElement).getText();
+			System.out.println(ActualText);
 			if(!ActualText.equals(TestData)) {
 				return "Failed - Actual text "+ActualText+" is not equal to to expected text "+TestData;
 			}

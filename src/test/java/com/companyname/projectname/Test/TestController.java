@@ -26,12 +26,6 @@ public class TestController extends Resources{
 	@BeforeClass
 	public void initBrowser() throws IOException {
 		Initialize();
-		/*
-		dr = new FirefoxDriver();
-		driver = new EventFiringWebDriver(dr);
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		System.out.println("In initBrowser---------------------------");	
-		*/	
 	}
 
 	@Test
