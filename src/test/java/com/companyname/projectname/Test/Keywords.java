@@ -66,7 +66,7 @@ public class Keywords extends Resources{
 		try {
 			String ActualText= getWebElement(webElement).getText();
 			if(!ActualText.equals(TestData)) {
-				return "Failed - Actual text "+ActualText+" is not equal to to expected text "+AppText.getProperty(webElement);
+				return "Failed - Actual text "+ActualText+" is not equal to to expected text "+TestData;
 			}
 		}catch (Throwable t) {
 			return "Failed - Element not found "+webElement;
@@ -161,9 +161,10 @@ public class Keywords extends Resources{
 		return getLocators(Repository.getProperty(locator));
 	}
 	
-	public void expliciteWait() throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 30);
+	public static String expliciteWait() throws Exception {
+		WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.visibilityOf(getWebElement(webElement)));
+		return "Pass";
 	}
 	
 	/*
@@ -176,49 +177,17 @@ public class Keywords extends Resources{
      return "Pass";
 	}
 	*/
-	public static void waitForPageToLoad(long timeOutInSeconds) {
-		ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() {
-			public Boolean apply(WebDriver driver) {
-				return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
-			}
-		};
-		try {
-			System.out.println("Waiting for page to load...");
-			WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-			wait.until(expectation);
-		} catch (Throwable error) {
-			System.out.println("Timeout waiting for Page Load Request to complete after " + timeOutInSeconds + " seconds");
-			Assert.assertFalse(true, "Timeout waiting for Page Load Request to complete.");
-
-		}
-	}
-
-	public static void clickWhenReady(By locator, int timeout) {
+	
+	public static String clickWhenReady(By locator, int timeout) {
 		WebElement element = null;
 		WebDriverWait wait = new WebDriverWait(driver, timeout);
 		element = wait.until(ExpectedConditions.elementToBeClickable(locator));
 		element.click();
+		return "Pass";
 
 	}
 
-	public static WebElement fluentWait(final WebElement webElement, int timeinsec) {
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(timeinsec, TimeUnit.SECONDS).pollingEvery(5, TimeUnit.SECONDS).ignoring(NoSuchElementException.class);
-		WebElement element = wait.until(new Function<WebDriver, WebElement>() {
-			public WebElement apply(WebDriver driver) {
-				return webElement;
-			}
-		});
 
-		return element;
-	};
-
-	public static WebElement getWhenVisible(By locator, int timeout) {
-		WebElement element = null;
-		WebDriverWait wait = new WebDriverWait(driver, timeout);
-		element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-		return element;
-
-	}
 	
 	public static String waitFor() throws InterruptedException {
 		try {
@@ -231,7 +200,8 @@ public class Keywords extends Resources{
 	
 	public static String selectDaysInDropDown() throws Exception{
 		RegistrationPage reg = new RegistrationPage();
-		return reg.selectDaysInDropDown();
+		String status = reg.selectDaysInDropDown();
+		return status;
 	}
 	
 	public static String selectMonthInDropDown() throws Exception{

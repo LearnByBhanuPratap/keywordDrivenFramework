@@ -17,6 +17,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -25,16 +26,16 @@ public class TestController extends Resources{
 	@BeforeClass
 	public void initBrowser() throws IOException {
 		Initialize();
-		
+		/*
 		dr = new FirefoxDriver();
 		driver = new EventFiringWebDriver(dr);
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		System.out.println("In initBrowser---------------------------");		
+		System.out.println("In initBrowser---------------------------");	
+		*/	
 	}
 
 	@Test
 	public void TestCaseController() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		System.out.println("In test---------------------------");		
 		
 		String startTime = TestUtils.now("dd.MMMM.yyyy hh.mm.ss aaa");
 		ReportUtil.startTesting(System.getProperty("user.dir")+"//src//test//java//com//companyname//projectname//Reports//index.html", startTime, "Test", "1.5");
@@ -44,11 +45,17 @@ public class TestController extends Resources{
 		// loop through the test cases
 		for(int TC=2;TC<=SuiteData.getRowCount("TestCases");TC++) {
 			
+			
+			
 			String TestCaseID = SuiteData.getCellData("TestCases", "TCID", TC);
 			String RunMode = SuiteData.getCellData("TestCases", "RunMode", TC);
 			
 			if(RunMode.equals("Y")) {
 				String TSStatus="Pass";
+				
+				dr = new FirefoxDriver();
+				driver = new EventFiringWebDriver(dr);
+				driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 				
 				int rows = TestStepData.getRowCount(TestCaseID);
 				if(rows<2) { 
@@ -73,6 +80,10 @@ public class TestController extends Resources{
 						
 						
 						TestData = TestStepData.getCellData(TestCaseID, TestDataField, TD);	
+						
+						if(TestDataField.equals("email")){
+							TestData = "test"+System.currentTimeMillis()+"@gmail.com";
+						}
 						
 						
 						Method method = Keywords.class.getMethod(keyword);	
@@ -102,15 +113,18 @@ public class TestController extends Resources{
 						
 					}
 					ReportUtil.addTestCase(TestCaseID, startTime, TestUtils.now("dd.MMMM.yyyy hh.mm.ss aaa"), TCStatus);
+					driver.quit();
 				}
 			}else {
 				// skip the test case
 				ReportUtil.addTestCase(TestCaseID, startTime, TestUtils.now("dd.MMMM.yyyy hh.mm.ss aaa"), "Skipped");
+				driver.quit();
 			}
 		}
 
 		ReportUtil.endSuite();
 		ReportUtil.updateEndTime(TestUtils.now("dd.MMMM.yyyy hh.mm.ss aaa"));
+		
 	}
 	
 	

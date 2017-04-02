@@ -50,10 +50,7 @@ public class Resources {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		Initialize();
-		System.out.println("--------");
-		System.out.println(Repository.getProperty("login.signOut"));
-	
+		Initialize();	
 	}
 	
 }
